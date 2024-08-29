@@ -55,4 +55,6 @@ Supporting the Development of Django
 
 Django's development depends on your contributions.
 
+* pipeline test
+
 If you depend on Django, remember to support the Django Software Foundation: https://www.djangoproject.com/fundraising/
