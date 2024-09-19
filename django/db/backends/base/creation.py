@@ -27,7 +27,7 @@ class BaseDatabaseCreation:
         return self.connection._nodb_cursor()
 
     def log(self, msg):
-        sys.stderr.write(msg + os.linesep)
+        print(msg, file=sys.stderr)
 
     def create_test_db(
         self, verbosity=1, autoclobber=False, serialize=True, keepdb=False

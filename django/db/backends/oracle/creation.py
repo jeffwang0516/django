@@ -325,7 +325,7 @@ class DatabaseCreation(BaseDatabaseCreation):
         for template in statements:
             stmt = template % parameters
             if verbosity >= 2:
-                print(stmt)
+                self.log(stmt)
             try:
                 cursor.execute(stmt)
             except Exception as err:
