@@ -609,11 +609,13 @@ class FileResponse(StreamingHttpResponse):
         ):
             self.headers["Content-Disposition"] = content_disposition
 
-
 class HttpResponseRedirectBase(HttpResponse):
     allowed_schemes = ["http", "https", "ftp"]
 
     def __init__(self, redirect_to, *args, **kwargs):
+        # 驗證 redirect_to 是否為安全的 URL
+        if not url_has_allowed_host_and_scheme(redirect_to, allowed_hosts=None, require_https=False):
+            raise ValueError("Invalid redirect URL")
         super().__init__(*args, **kwargs)
         self["Location"] = iri_to_uri(redirect_to)
         parsed = urlsplit(str(redirect_to))
@@ -621,7 +623,6 @@ class HttpResponseRedirectBase(HttpResponse):
             raise DisallowedRedirect(
                 "Unsafe redirect to URL with protocol '%s'" % parsed.scheme
             )
-
     url = property(lambda self: self["Location"])
 
     def __repr__(self):
