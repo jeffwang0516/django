@@ -1,3 +1,6 @@
+from django.core.exceptions import SuspiciousOperation
+from django.utils.http import is_safe_url
+
 class RequestSite:
     """
     A class that shares the primary interface of Site (i.e., it has ``domain``
@@ -9,6 +12,12 @@ class RequestSite:
 
     def __init__(self, request):
         self.domain = self.name = request.get_host()
+        self.validate_host(self.domain)
+
+    def validate_host(self, host):
+        # 檢查主機是否合法
+        if not is_safe_url(url=f"http://{host}", allowed_hosts=None):
+            raise SuspiciousOperation("Unsafe host")
 
     def __str__(self):
         return self.domain
